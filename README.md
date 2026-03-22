@@ -45,16 +45,9 @@ The images used to construct the models originate from a standardized metrology 
 3. **Color Deviation Map** — The software overlays the scan onto the CAD and renders a color map encoding surface deviation. Dimensional tolerances (often derived from ISO 8062-3 or customer-specific tables) define the acceptance band.
 4. **Labeling** — Images are classified as *conforming* or *non-conforming* based on the applied tolerance thresholds. For YOLO training, the specific defective regions are annotated manually using bounding boxes.
 
-The 3D file, 2D drawings, and technical standards defining the manufacturing and acceptance criteria of the product are usually provided by the customer. These documents establish the dimensional and geometric conformity conditions of the part, which is fundamental for the dimensional analysis process. In addition, the reference points, known as datum points (or zero points), are provided, defining the regions of the part from which the evaluation of other regions must start. This alignment is a critical step, as it ensures that the subsequent color map comparison is performed correctly, guaranteeing that the evaluated dimensions are effectively related to the references established in the technical drawing.
+The 3D file, 2D drawings, and technical standards defining the manufacturing and acceptance criteria are provided by the customer. These documents establish the dimensional and geometric conformity conditions of the part. In addition, the reference points, known as datum points (or zero points), are provided to align the part correctly in 3D space. This CAD alignment is a critical step, as it ensures that the subsequent evaluation is performed accurately and relates correctly to the engineering drawing.
 
-To exemplify the alignment process, Figure 1 presents a technical drawing with dimensional and geometric tolerances applied according to the ASME Y14.5-2009 standard. In this case, the planes and surfaces identified as A, B, and C are the designated references (datum points) for positioning the part, ensuring the dimensional analysis will be conducted accurately. 
-
-*Figure 1 – Alignment example using geometric references*
-*(Source: Adapted from Baker, 2021)*
-
-Based on this set of information, standards, and product alignment, the comparison stage is performed using the color map. This aims to visually assist in evaluating whether the surfaces and dimensions of the digitized part conform to the 3D CAD model. This resource visually associates geometric differences with a color scale, where regions with excess material (i.e., areas where measurements are above the CAD model) are displayed in warm colors. Conversely, regions with a lack of material or dimensions below the CAD model are displayed in cold colors. This visual representation allows for quick identification of both localized deviations and overall trends across the product, facilitating decision-making regarding the acceptance or rejection of the analyzed part. Figure 2 presents an example of a comparison between a digitized part and its respective CAD file, applying the color map over the surfaces and highlighting the regions with excess or missing material.
-
-*Figure 2 – Color map comparison*
+Following this alignment, the comparison stage is executed visually using a **Color Deviation Map**. This process validates whether the surfaces and dimensions of the digitized part conform to the nominal 3D CAD model. Geometric differences are associated with a thermal color scale: regions with excess material (measurements above the CAD model) are displayed in warm colors, while regions with missing material (dimensions below the CAD model) are displayed in cold colors. This visual representation allows for quick identification of localized defects and overall manufacturing trends. The image below presents an example of this analysis in PolyWorks, mapping deviations to highlight non-conformities:
 
 ![PolyWorks Color Deviation Map](docs/polyworks_example.png)
 
@@ -196,7 +189,6 @@ The dataset contains a compact set of labeled defective regions — insufficient
 
 ## Academic References
 
-- **Baker, J.** (2021). *Geometric Dimensioning and Tolerancing Reference Guidelines*. 2nd Edition. New York: Engineering Standards Press.
 - **HAVEN METROLOGY.** (2020). Understanding GD&T Flatness in PolyWorks 2020. Haven Metrology. Available at: https://www.havenmetrology.com/understanding-gdt-flatness-in-polyworks-2020/.
 - **Redmon, J. et al.** (2016). You Only Look Once: Unified, Real-Time Object Detection. *CVPR*.
 - **Kang, S. et al.** (2024). Object Detection YOLO Algorithms and Their Industrial Applications. *Electronics*.
