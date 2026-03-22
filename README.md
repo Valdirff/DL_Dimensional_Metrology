@@ -45,6 +45,21 @@ The images used to construct the models originate from a standardized metrology 
 3. **Color Deviation Map** — The software overlays the scan onto the CAD and renders a color map encoding surface deviation. Dimensional tolerances (often derived from ISO 8062-3 or customer-specific tables) define the acceptance band.
 4. **Labeling** — Images are classified as *conforming* or *non-conforming* based on the applied tolerance thresholds. For YOLO training, the specific defective regions are annotated manually using bounding boxes.
 
+The 3D file, 2D drawings, and technical standards defining the manufacturing and acceptance criteria of the product are usually provided by the customer. These documents establish the dimensional and geometric conformity conditions of the part, which is fundamental for the dimensional analysis process. In addition, the reference points, known as datum points (or zero points), are provided, defining the regions of the part from which the evaluation of other regions must start. This alignment is a critical step, as it ensures that the subsequent color map comparison is performed correctly, guaranteeing that the evaluated dimensions are effectively related to the references established in the technical drawing.
+
+To exemplify the alignment process, Figure 1 presents a technical drawing with dimensional and geometric tolerances applied according to the ASME Y14.5-2009 standard. In this case, the planes and surfaces identified as A, B, and C are the designated references (datum points) for positioning the part, ensuring the dimensional analysis will be conducted accurately. 
+
+*Figure 1 – Alignment example using geometric references*
+*(Source: Adapted from Baker, 2021)*
+
+Based on this set of information, standards, and product alignment, the comparison stage is performed using the color map. This aims to visually assist in evaluating whether the surfaces and dimensions of the digitized part conform to the 3D CAD model. This resource visually associates geometric differences with a color scale, where regions with excess material (i.e., areas where measurements are above the CAD model) are displayed in warm colors. Conversely, regions with a lack of material or dimensions below the CAD model are displayed in cold colors. This visual representation allows for quick identification of both localized deviations and overall trends across the product, facilitating decision-making regarding the acceptance or rejection of the analyzed part. Figure 2 presents an example of a comparison between a digitized part and its respective CAD file, applying the color map over the surfaces and highlighting the regions with excess or missing material.
+
+*Figure 2 – Color map comparison*
+
+![PolyWorks Color Deviation Map](docs/polyworks_example.png)
+
+*(Source: HAVEN METROLOGY, 2020)*
+
 ### Simulation and Augmentation
 
 To expand the dataset volume beyond what single-part production batches provide, geometric variation was simulated: small rotations and translations were applied to existing scan alignments from their datum reference points, reproducing realistic manufacturing variability. This approach generated multiple dimensional variants of the same component, significantly increasing training sample diversity.
@@ -85,9 +100,8 @@ DL_Dimensional_Metrology/
 │   └── data.yaml               # YOLO class paths and attributes
 │
 └── docs/
-    ├── yolo_defect_example.png # Example of semantic deviation map
-    ├── confusion_matrix.png    # Classification evaluation matrix
-    └── training_history.png    # Training vs Validation curves
+    ├── polyworks_example.png   # PolyWorks color map comparison example
+    └── yolo_defect_example.png # Example of semantic deviation map
 ```
 
 ---
@@ -124,14 +138,7 @@ data/good/  +  data/bad/
 
 ### Visual Data & Metrics
 
-*(**Nota:** Salve a imagem exemplo gerada pelo GPT na pasta `docs/` com o nome `yolo_defect_example.png`. Se quiser adicionar suas matrizes ou gráficos, salve como `confusion_matrix.png` e `training_history.png`)*
-
 ![Exemplo de Mapa de Desvio Térmico com Deteccão YOLO](docs/yolo_defect_example.png)
-
-<p align="center">
-  <img src="docs/confusion_matrix.png" width="45%" alt="Matriz de Confusão" />
-  <img src="docs/training_history.png" width="45%" alt="Histórico de Treinamento" />
-</p>
 
 ### CNN Binary Classifier
 
@@ -185,6 +192,8 @@ The dataset contains a compact set of labeled defective regions — insufficient
 
 ## Academic References
 
+- **HAVEN METROLOGY.** (2020). Understanding GD&T Flatness in PolyWorks 2020. Haven Metrology. Available at: https://www.havenmetrology.com/understanding-gdt-flatness-in-polyworks-2020/.
+- **Baker,** (2021). *Geometric Dimensioning and Tolerancing Reference*.
 - **Wagner, P. et al.** (2020). PTB-XL, a large publicly available electrocardiography dataset. *Scientific Data*.
 - **Redmon, J. et al.** (2016). You Only Look Once: Unified, Real-Time Object Detection. *CVPR*.
 - **Kang, S. et al.** (2024). Object Detection YOLO Algorithms and Their Industrial Applications. *Electronics*.
