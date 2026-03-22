@@ -1,0 +1,23 @@
+# Dataset directories (PRIVATE DATA)
+data/
+dados/
+*.csv
+*.json
+
+# Pre-trained models and weights
+models/
+*.pt
+*.onnx
+*.weights
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual Environments
+.env
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc

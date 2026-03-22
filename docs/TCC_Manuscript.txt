@@ -1,0 +1,275 @@
+ESTUDO DA UTILIZAÇÃO DE ALGORITMOS DE APRENDIZAGEM PROFUNDA NA METROLOGIA DIMENSIONAL
+
+
+Kevin Regis Justino1
+Stefano Romeu Zeplin2
+Valdir Ferreira Filho3
+
+Resumo
+
+A precisão dimensional é um elemento essencial para garantir a qualidade e a confiabilidade dos produtos industriais. Com a evolução da metrologia dimensional, os sistemas de medição por digitalização tridimensional passaram a capturar geometrias complexas com elevado nível de detalhe, mas também geraram um aumento expressivo no volume de dados a serem analisados. Esse cenário evidencia a necessidade de soluções automatizadas capazes de interpretar grandes conjuntos de informações com eficiência e consistência. Neste contexto, este trabalho propõe a aplicação de redes neurais convolucionais (CNNs) e da arquitetura YOLO para a classificação e detecção de falhas visuais em peças digitalizadas. São abordados os conceitos fundamentais dos processos produtivos, da metrologia dimensional baseada em digitalização e das principais arquiteturas de aprendizado profundo aplicadas à inspeção industrial. O modelo CNN obteve desempenho satisfatório na classificação binária entre as amostras, enquanto o modelo YOLO demonstrou capacidade promissora na localização espacial das falhas. Os resultados indicam que o uso de aprendizado profundo em metrologia digital representa um avanço significativo na automação de inspeções visuais, reduzindo a dependência de operadores humanos e aumentando a padronização e a confiabilidade das análises em ambientes industriais.
+
+Palavras-Chave: Metrologia dimensional; redes neurais convolucionais (CNNs); YOLO; detecção de falhas.
+
+
+CLASSIFICATION OF DIMENSIONAL DATA USING DEEP LEARNING APPLIED TO METROLOGY
+
+Abstract: Dimensional accuracy is an essential element for ensuring the quality and reliability of industrial products. With the advancement of dimensional metrology, three-dimensional digitization systems have evolved to capture complex geometries with a high level of detail, but they have also led to a significant increase in the volume of data to be analyzed. This scenario highlights the need for automated solutions capable of interpreting large datasets efficiently and consistently. In this context, this work proposes the application of convolutional neural networks (CNNs) and the YOLO architecture for the classification and detection of visual defects in digitized parts. The study addresses the fundamental concepts of production processes, dimensional metrology based on digitization, and the main deep learning architectures applied to industrial inspection. The CNN model achieved satisfactory performance in binary classification between samples, while the YOLO model demonstrated promising capability in the spatial localization of defects. The results indicate that the use of deep learning in digital metrology represents a significant advancement in the automation of visual inspections, reducing dependence on human operators and increasing the standardization and reliability of analyses in industrial environments.
+
+Keywords: Dimensional metrology; Convolutional neural networks (CNNs); YOLO; Fault detection.
+
+1	INTRODUÇÃO
+
+A garantia da qualidade em processos industriais depende, de forma significativa, da capacidade de medir e controlar dimensões físicas de peças e produtos com precisão e confiabilidade. Neste cenário, a metrologia dimensional assume um papel estratégico, sendo responsável pela verificação da conformidade entre os produtos fabricados e suas especificações projetuais (Master Gage & Tool Co., 2023). Com a evolução da indústria, que incorpora tecnologias digitais e interconectividade entre equipamentos, as exigências por eficiência, rastreabilidade e automação nos processos de inspeção aumentaram substancialmente (Barbosa et al., 2022).
+Entretanto, a realidade das linhas de produção apresenta desafios contínuos. A alta rotatividade de profissionais, aliada à escassez de mão de obra qualificada e à variação do processo de produção, contribui para a elevação de erros operacionais. Além disso, a complexidade crescente dos produtos industriais exige métodos de controle dimensional mais robustos e adaptáveis. Nesse contexto, observa-se um movimento progressivo de substituição de tarefas manuais por sistemas automatizados, com destaque para o uso de sensores a laser, braços robóticos e dispositivos de digitalização (Zeiss, 2023).
+Como os processos industriais estão sujeitos a variações operacionais, é comum que se realize a medição de um número elevado de amostras por lote, com o objetivo de aumentar a confiabilidade da produção. Isso gera um alto volume de dados que precisam ser interpretados por analistas especializados. Dada a limitação de recursos humanos, esse cenário tem revelado um gargalo crescente na avaliação das comparações (Barbosa et al., 2022). 
+Nesse contexto, o uso de aprendizado de máquina, como redes neurais convolucionais (CNNs), surge como uma solução promissora para auxiliar e automatizar a interpretação dos dados dimensionais. Esses algoritmos podem ser treinados para reconhecer padrões de conformidade em um elevado volume de dados, reduzindo significativamente a carga de trabalho dos analistas e aumentando a agilidade na tomada de decisões (Ferguson et al., 2018).
+Este artigo tem como objetivo apresentar a aplicação de CNNs na classificação de dados dimensionais obtidos por digitalização tridimensional. Inicialmente, são discutidos os fundamentos dos processos produtivos industriais e os princípios da metrologia dimensional baseada em digitalização. Em seguida, aborda-se o uso de técnicas de inteligência artificial no contexto industrial, com ênfase nas CNNs e na arquitetura YOLO. A metodologia apresenta a aquisição e o tratamento dos dados, bem como a implementação e o treinamento das arquiteturas propostas. Por fim, são apresentados e discutidos os resultados obtidos, evidenciando a elevada capacidade de classificação das CNNs e o desempenho promissor na identificação espacial de falhas em componentes digitalizados.
+
+2 	DESENVOLVIMENTO
+
+Neste tópico é apresentado o núcleo do projeto, reunindo de forma estruturada os fundamentos teóricos, os procedimentos metodológicos e as análises experimentais que sustentam a pesquisa. São detalhadas as etapas de desenvolvimento do estudo, desde a base conceitual até a implementação prática dos modelos de detecção e a discussão dos resultados obtidos.
+
+2.1 	FUNDAMENTAÇÃO TEÓRICA
+
+A crescente automatização dos processos industriais tem impulsionado a integração entre engenharia, metrologia e redes neurais, configurando um novo paradigma para o controle de qualidade. Nesse contexto, a fundamentação teórica desta pesquisa reúne os conceitos que sustentam essa convergência tecnológica. São discutidos, primeiramente, os princípios que regem os processos de produção industrial, as fontes de variação que influenciam a precisão dimensional dos produtos e a evolução da metrologia por digitalização. Em seguida, apresentam-se as bases teóricas das CNNs e da arquitetura YOLO, bem como suas aplicações emergentes na metrologia e inspeção visual automatizada.
+
+2.1.1 	Processos de produção industrial
+
+	Os processos de produção industrial referem-se ao conjunto de atividades técnicas e de engenharia responsáveis por transformar matérias primas em bens acabados, cumprindo requisitos de projeto, funcionalidade, custo, prazo e qualidade. Esses processos consistem em ações sistemáticas que, apoiadas por máquinas, equipamentos e instalações, transformam matérias primas em produtos de valor econômico (Suciu & Tulpan, 2019). 
+O planejamento de produção, uma das etapas iniciais do processo, é fundamental para que o processo de produção ocorra, pois nessa etapa define-se o fluxo operacional, calcula e dimensiona os recursos necessários como equipamentos, mão de obra, energia e estabelece a capacidade produtiva da empresa. Estudos apontam que uma programação eficiente, que considere aspectos como o sequenciamento de tarefas, o roteamento entre máquinas e a alocação de recursos produtivos, permite reduzir paradas não programadas, minimizar desperdícios de material e evitar retrabalho, assegurando a entrega dentro das especificações e dos prazos acordados (Chen et al., 2023).
+A etapa de manufatura corresponde à fase em que a matéria prima é convertida em produtos que devem atender às especificações de projeto. Para isso, são aplicadas operações físicas, químicas ou mecânicas que conferem forma, dimensões e acabamento. Essas operações variam conforme a complexidade do produto e o desempenho esperado. Contudo, estudos apontam que a crescente demanda por maior precisão e eficiência evidencia as limitações dos métodos convencionais, os quais nem sempre permitem obter peças com a geometria, as dimensões e a resistência necessárias (Nalajam & Varadarajan, 2021).
+Após a manufatura, seguem as etapas de inspeção de qualidade, montagem e testes. Considerando as limitações dos métodos convencionais de manufatura, a etapa de inspeção de qualidade torna-se essencial antes da etapa de montagem, envolvendo analises dimensionais, funcionais e visuais, pois garante que os produtos atendam aos padrões estabelecidos, seja detectado falhas e assegurem conformidade com as especificações técnicas (Oliveira et al., 2024). Para apoiar a etapa de inspeção de qualidade, observa-se um avanço da automação, com sensores e sistemas integrados que fornecem grande volume de dados e permitem maior precisão no monitoramento, dado que os softwares têm se tornado elementos cada vez mais vitais diante da crescente complexidade dos projetos e processos produtivos (Oliveira et al., 2024).
+
+2.1.3 	Fontes de variação e erros nos processos industriais
+
+A variação é um elemento inerente aos processos industriais, decorrente tanto da natureza dos materiais e equipamentos quanto das condições de operação. Em termos gerais, a variação pode ser entendida como a diferença entre os resultados obtidos e os resultados esperados, sendo um fator determinante na qualidade final do produto. Essa relação é evidenciada em processos complexos, como a extrusão plástica, nos quais parâmetros como espessura e alongamento do filme precisam manter consistência e atender a padrões rigorosos para garantir a adequação ao uso final (Tur, 2023).
+As fontes de variação em processos produtivos podem ser classificadas em diferentes categorias. Entre elas, pode-se destacar aquelas associadas às máquinas e equipamentos, relacionadas a fatores como desgaste ou calibração inadequada, bem como as ligadas às matérias primas, cuja sua não uniformidade pode comprometer a estabilidade do processo. Somam-se ainda os fatores humanos, como diferenças de treinamento, fadiga ou distrações durante a execução das tarefas, e as condições ambientais, a exemplo de temperatura, vibração e umidade. Essas diversas fontes de variabilidade exigem atenção constante das equipes de engenharia e qualidade, de modo a mitigar seus efeitos e garantir maior confiabilidade ao sistema produtivo.
+Entre as diversas fontes de variabilidade nos processos industriais, os fatores humanos se destacam como elementos críticos pois a detecção de defeitos ainda é frequentemente atribuída a operadores humanos, que realizam inspeções visuais em tempo real. Esse método apresenta limitações importantes, já que a natureza manual da tarefa o torna suscetível a erros humanos. Fatores como fadiga, distrações e lapsos de concentração podem comprometer a detecção de falhas, resultando em produtos defeituosos não identificados ou identificados tardiamente (Tur, 2023).
+O impacto da variação e dos erros nos processos industriais é significativo. Conforme Real e Torres (2024), a falha humana continua sendo um fator determinante na eficácia da montagem manual, uma vez que tais operações podem ser uma fonte importante de erros. Esses erros reduzem a qualidade e a produtividade da produção, além de gerar perdas econômicas. Em setores de alta exigência como o automotivo e o aeroespacial, as consequências podem ser ainda mais graves, já que, segundo os autores, erros de montagem estão entre as principais causas de defeitos, podendo incluir peças instaladas incorretamente, aplicação inadequada de torque, componentes ausentes ou danificados, fatores que comprometem diretamente a confiabilidade e a segurança dos produtos.
+
+2.1.2 	Medição por digitalização e a metrologia dimensional
+
+	A medição por digitalização tem se consolidado como uma das principais metodologias aplicadas à metrologia dimensional contemporânea. No contexto da engenharia reversa e do controle dimensional, esse processo emergiu como uma abordagem crucial para lidar com produtos que apresentam geometrias complexas, viabilizando tanto a inovação em projeto quanto a inspeção rápida de componentes (Yu et al., 2019). Enquanto os sistemas de medição por contato, como as Máquinas de Medição por Coordenadas (CMMs), são reconhecidos pela alta precisão, apresentam limitações significativas ao inspecionar superfícies complexas devido à sua baixa velocidade de aquisição. Nesse sentido, sensores ópticos, como scanners a laser e sistemas de luz estruturada, destacam-se por possibilitar a digitalização rápida e não destrutiva de peças, reduzindo a necessidade de intervenção manual e permitindo a obtenção de representações tridimensionais detalhadas (Yu et al., 2019). 
+Essa evolução tecnológica surge em resposta às exigências da indústria moderna, na qual a metrologia dimensional demanda cada vez mais eficiência, precisão e capacidade de lidar com peças de geometria complexa, superando as limitações dos métodos tradicionais de medição por contato (Yu et al., 2019). O processo de digitalização tridimensional resulta em dados de medição de alta resolução, usualmente representados por nuvens de pontos ou superfícies livres, que descrevem a geometria real da peça e servem de base para análises subsequentes (Von Freyberg; Fischer, 2020).
+Com a captura dos dados de medição representados por nuvens de ponto, segue a etapa seguinte onde consiste em alinhar esses dados ao modelo nominal definido em CAD, possibilitando o cálculo e a visualização dos desvios de cada ponto em relação à geometria projetada. Nesse contexto, o uso do modelo CAD e das tolerâncias especificadas em desenho técnico torna-se essencial, pois estabelece a referência para a associação dos elementos geométricos às medições e assegura a validade metrológica da comparação dimensional (Von Freyberg; Fischer, 2020).
+As tolerâncias dimensionais e geométricas desempenham papel central nesse contexto. Normas como a ISO 8062-3 ou a ISO 8015 são exemplos que estabelecem critérios gerais e específicos, onde aliados às especificações do cliente, determinam as condições de aceitação da peça (ISO, 2007; ISO, 2011). Com as informações de tolerâncias dimensionais e geométricas conhecidas é possível realizar comparações entre nuvens de pontos e seu modelo CAD de referência por meio de mapa de cores. Esse recurso associa as diferenças geométricas a uma escala de cor, onde regiões em excesso de material podem ser representadas por cores quentes e regiões com falta de material por cores frias. Essa visualização possibilita identificar rapidamente desvios localizados ou tendências sistemáticas no produto. Dessa forma, o mapa de cores não é apenas uma representação gráfica, mas uma ferramenta que pode ser interpretada para identificar não conformidades.
+A confiabilidade das medições por digitalização está diretamente relacionada a fatores metrológicos, como a calibração dos equipamentos e a avaliação da incerteza associada aos resultados, elementos indispensáveis para garantir a validade e a qualidade técnica das medições (Gugg; Harker; O’Leary, 2014).  Assim, embora a digitalização seja uma tecnologia poderosa, sua aplicação deve estar alinhada às boas práticas metrológicas e às normas internacionais, de modo a garantir que os resultados obtidos possuam validade técnica e sirvam como base confiável para decisões de qualidade e para aplicações em inteligência artificial.
+
+2.1.5 	Redes neurais convolucionais (CNNs)
+
+As CNNs representam uma das arquiteturas mais importantes do Deep Learning, projetadas especificamente para lidar com dados que possuem estrutura espacial, como imagens e vídeos. Diferentemente das redes neurais tradicionais, que tratam cada entrada de forma independente, as CNNs exploram correlações locais entre pixels e extraem padrões de forma hierárquica, tornando-se a base da maioria dos sistemas modernos de reconhecimento de imagens, classificação visual e detecção de objetos (Zhao et al., 2024).
+A arquitetura de uma CNN é composta por diferentes tipos de camadas, cada uma responsável por uma etapa específica do processamento da informação visual. No processo inicial, se recebe a imagem em formato matricial, preservando as dimensões espaciais de altura, largura e canais de cor. O núcleo da rede é formado pelas camadas convolucionais, nas quais filtros percorrem a imagem em busca de padrões locais[kRJ1.1]. Esses filtros são aprendidos automaticamente durante o treinamento, de modo que, nas camadas iniciais, capturam características simples, como bordas e texturas, enquanto nas camadas mais profundas representam formas complexas ou abstrações de alto nível. Os mapas de características passam pelas camadas de pooling[kRJ2.1], responsáveis por reduzir a dimensionalidade e aumentar a robustez da rede a variações locais, como pequenas translações ou ruídos. O método mais comum, o max pooling, seleciona o valor mais representativo de uma região, condensando a informação sem comprometer a qualidade da representação (Zhao et al., 2024).
+Na fase final, as representações extraídas são achatadas em um vetor unidimensional e encaminhadas para camadas totalmente conectadas, semelhantes às das redes neurais tradicionais. Nessa etapa, a rede integra as características aprendidas e realiza a classificação propriamente dita, associando a entrada a uma das classes possíveis. Para permitir que todo esse processo seja efetivo, as CNNs utilizam funções de ativação não lineares que ampliam sua capacidade de modelagem. A mais empregada nas camadas intermediárias é a Rectified Linear Unit (ReLU)[kRJ3.1], que acelera o treinamento e evita o desaparecimento do gradiente. Enquanto na camada de saída é comum o uso da função sigmoid em problemas de classificação binária ou softmax em tarefas multiclasse, ambas responsáveis por converter os valores obtidos em probabilidades normalizadas (Yamashita et al., 2018).
+Uma das principais vantagens das CNNs é a eliminação da necessidade de extração manual de atributos, uma prática comum em métodos tradicionais de visão computacional. Em vez de depender de conhecimento especializado para definir quais características são relevantes, as CNNs ajustam automaticamente seus filtros durante o treinamento, identificando de forma autônoma os padrões mais discriminativos para cada tarefa. Para melhorar sua capacidade de generalização, essas redes empregam técnicas de regularização, como data augmentation, que gera variações artificiais nas imagens de treinamento, e dropout, que desativa aleatoriamente neurônios durante o aprendizado, prevenindo o sobreajuste (Alzubaidi et al., 2021). Outros métodos clássicos, como a penalização dos pesos, também são utilizados para tornar os modelos mais robustos e adaptáveis a condições reais.
+O desempenho das CNNs em tarefas de reconhecimento e classificação de imagens é amplamente reconhecido como superior ao de abordagens convencionais, que dependem de algoritmos de detecção de bordas ou classificadores como Support Vector Machines (SVM) e Random Forest. Essas técnicas apresentam limitações em cenários com ruídos, variações de iluminação ou defeitos sutis, enquanto as CNNs mantêm alta precisão mesmo em ambientes complexos, justificando sua ampla adoção em aplicações industriais de inspeção visual. Apesar disso, apresentam limitações quando aplicadas a dados com dependência temporal, como séries de sensores ou vídeos. Nesses casos, é comum combinar CNNs com redes neurais recorrentes (RNNs), Long Short-Term Memory (LSTM) ou arquiteturas híbridas baseadas em mecanismos de atenção, de modo a capturar simultaneamente as estruturas espaciais e temporais dos dados (Alzubaidi et al., 2021).[kRJ4.1]
+
+
+2.1.5.1 YOLO
+
+Apesar de toda a eficiência das CNNs em tarefas de classificação de imagens, muitas aplicações industriais exigem não apenas a identificação de um defeito, mas também a localização da região onde ele ocorre. Os modelos de CNN tradicionais, quando aplicados de forma direta, limitam-se a indicar se uma peça é “conforme” ou “não conforme”, sem apontar a área específica do problema. Para superar essa limitação, foram desenvolvidas arquiteturas especializadas em detecção de objetos em tempo real, das quais a mais representativa é a família YOLO (You Only Look Once), introduzida por Redmon et al. (2016).
+O princípio do YOLO consiste em dividir a imagem em uma grade e, para cada célula, prever simultaneamente as coordenadas das caixas delimitadoras (bounding boxes), a confiança de que cada caixa contém um objeto e a probabilidade desse objeto pertencer a uma determinada classe. Essa abordagem, baseada em uma CNN como backbone para extração de características, reformula a detecção de objetos como um problema de regressão única e integrada. Em vez de empregar múltiplas etapas independentes, como nos métodos baseados em region proposals (por exemplo, R-CNN e suas variantes), o YOLO realiza todo o processo em uma única passagem pela rede, o que garante elevada velocidade de processamento (Redmon et al., 2016).
+Na prática, isso significa que o YOLO é capaz de analisar uma imagem completa de uma linha de produção em frações de segundo, identificando simultaneamente se há defeitos, onde estão e de que tipo são. Essa combinação de rapidez e precisão o torna especialmente adequado para o ambiente industrial, em que o fluxo contínuo de peças requer decisões imediatas e tolerância mínima a erros. Além disso, as versões mais recentes da família YOLO incorporaram camadas residuais, conexões cross-stage, mecanismos de atenção e estratégias otimizadas de ancoragem, resultando em melhorias expressivas na precisão, na robustez a ruídos e na generalização para diferentes condições de iluminação e textura (Kang et al., 2024).
+
+2.1.6 	Aplicações de CNNs na metrologia
+
+A adoção de CNNs na indústria tem promovido uma transformação significativa nas práticas de inspeção de qualidade e metrologia visual. Tradicionalmente, os processos de detecção de erros dependiam, e ainda dependem, de inspeções manuais, que além de exigirem mão de obra especializada, são suscetíveis a falhas humanas. A introdução de modelos baseados em aprendizado profundo tem permitido identificar falhas em tempo real com alta precisão, automatizando etapas críticas do controle de qualidade e garantindo maior padronização (Kavitha et al., 2024).
+A capacidade adaptativa das CNNs, as tornam especialmente adequadas para aplicações industriais em que há grande variabilidade nos padrões de defeitos e nas condições de operação. Estudos aplicados à classificação de padrões defeituosos em mapas de wafer demonstram que, mesmo em conjuntos de dados desbalanceados, os modelos baseados em CNNs obtêm desempenho superior às abordagens convencionais (Saqlain, Abbas e Lee, 2020).
+A versatilidade das CNNs pode ser observada em diferentes segmentos industriais. No setor farmacêutico, essas redes têm sido empregadas em inspeções automatizadas de cápsulas, atingindo acurácia superior a 97% na classificação entre produtos conformes e não conformes, utilizando imagens RGB. Adicionalmente, técnicas de inteligência artificial explicável, como Grad-CAM e SHAP, têm sido incorporadas para garantir transparência e confiabilidade nas decisões do modelo, aspecto essencial em setores regulados (Raab, 2022).
+Em ambientes de produção complexos, como linhas de extrusão plástica em múltiplas etapas, redes neurais profundas também têm se mostrado promissoras não apenas na detecção de falhas, mas na análise de suas causas, correlacionando parâmetros de processo e não conformidades (Tur, 2023). De modo semelhante, sistemas de inspeção automatizada têm sido empregados na verificação de peças industriais, como discos de fricção, utilizando CNNs para realizar detecção e classificação binária entre peças conformes e defeituosas, garantindo fluxo contínuo de inspeção sem intervenção humana (Mandapaka, 2023).
+Mais recentemente, o avanço das arquiteturas de detecção em tempo real, com a YOLO, tem ampliado ainda mais o alcance das CNNs na metrologia industrial. Em estudos recentes, o YOLOv5 foi otimizado para detecção de ferramentas industriais em ambientes de manufatura inteligente, alcançando mean average precision (mAP) superior a 98%, demonstrando alta robustez a variações de escala, orientação e iluminação (Zendehdel, Chen e Leu, 2023). Essa combinação de precisão e velocidade reforça o papel das CNNs e arquiteturas como a YOLO, sendo soluções tecnológicas centrais para inspeções visuais automatizadas, controle dimensional e metrologia em tempo real.
+
+
+2.2 	METODOLOGIA
+
+A metodologia utilizada neste artigo está organizada em etapas que abrangem o processo de coleta dos dados, seguido pela rotulação das imagens de acordo com os critérios estabelecidos para a análise dimensional do produto. Logo após, são apresentadas as arquiteturas de redes neurais adotadas, destacando-se tanto abordagens convencionais quanto a aplicação da arquitetura YOLO. Por fim, são detalhadas as métricas de avaliação empregadas, as quais possibilitam mensurar a eficácia dos modelos e comparar os diferentes resultados obtidos.
+
+2.2.1 	Aquisição dos Dados
+
+A aquisição dos dados inicia através da digitalização do produto por equipamentos como Hand-scan, Metra-scan, braços de medição portátil, entre outros. Essa digitalização, resulta em um arquivo na extensão em nuvem de pontos ou Stl. A figura 1 ilustra um desses equipamentos utilizados neste processo.
+
+Figura 1 – Digitalização utilizando Hand-scan
+ 
+Fonte: CREAFORM (2023)
+
+Após o processo de digitalização, procede-se à fase de comparação. Essa etapa é realizada através da sobreposição do arquivo digitalizado com o seu modelo 3D CAD de referência. A figura 2 apresenta um exemplo de um arquivo stl e seu modelo CAD correspondente.
+
+Figura 2 – Exemplo de Arquivo digitalizado
+ 
+Fonte: Próprio Autor (2025).
+	
+O arquivo 3D, os desenhos 2D e as normas técnicas que definem os critérios de fabricação e aceitação do produto, são fornecidos pelo cliente. Esses documentos estabelecem as condições de conformidade dimensional e geométrica da peça, sendo fundamental para o processo de análise dimensional. Além disso, é disponibilizado os pontos de referência, denominados como pontos zeros, regiões da peça aonde deve-se partir para avaliar as demais regiões. Esse alinhamento é uma etapa crítica, pois assegura que a comparação através do mapa de cor, etapa subsequente, seja realizada de forma correta, garantindo que as dimensões avaliadas estejam efetivamente relacionadas às referências estabelecidas no desenho técnico. 
+Para exemplificar o processo de alinhamento, a Figura 3 apresenta um desenho técnico com tolerâncias dimensionais e geométricas aplicadas conforme a norma ASME Y14.5-2009. Nesse caso, os planos e superfícies identificados como A, B e C são as denominadas referências (ponto zero) para o posicionamento da peça, garantindo que a análise dimensional será realizada de forma correta.
+
+Figura 3 – Exemplo de alinhamento utilizando referências geométricas
+ 
+Fonte: Adaptado de Baker (2021).
+
+A partir desse conjunto de informações, normas e alinhamento do produto é realizado a etapa de comparação através do mapa de cor, que tem como objetivo auxiliar de maneira visual a avaliar se as superfícies e dimensões da peça digitalizada estão de acordo com o modelo 3D CAD. Esse recurso associa visualmente a diferenças geométricas a uma escala de cor, onde regiões com excesso de material, ou seja, áreas onde as medidas estão acima do modelo CAD, são exibidas em cores quentes. Já as regiões com ausência de material ou dimensões inferiores ao modelo CAD são exibidas em cores frias. Essa representação visual permite identificar, de maneira rápida, tanto desvios localizados quanto tendências em todo o produto, facilitando a tomada de decisão sobre a aceitação ou rejeição da peça analisada. A Figura 4 apresenta um exemplo de comparação entre uma peça digitalizada e seu respectivo arquivo CAD, realizando a aplicação do mapa de cores sobre as superfícies e evidenciando as regiões com excesso ou falta de material.
+
+
+Figura 4 – Comparação por mapa de cor
+ 
+Fonte: Adaptado de Haven Metrology (2020).
+
+2.2.2 	Rotulação das Imagens
+
+Juntamente com as normas fornecidas pelo solicitante do produto, é disponibilizada também a tabela de tolerâncias, muitas vezes baseada em normas internacionais, como a ISO 8062, que define tolerâncias dimensionais gerais. Além dessas tabelas, algumas regiões específicas podem, em acordo com o cliente, ser aceitas com acréscimo ou remoção de material, de acordo com a funcionalidade do produto. A partir dessas informações e definições, inicia-se o processo de rotulação das imagens, classificando-as como conformes ou não conformes. A Figura 5 apresenta um exemplo de tabela de tolerâncias utilizada, conforme especificado na ISO 8062.
+
+
+Figura 5 – Exemplo de tabela de tolerância dimensional
+ 
+Fonte: ISO 8062:1994.
+
+Considerando que o treinamento de redes neurais requer um número elevado de imagens, foi adotado o recurso de simulação de variações geométricas, a fim de ampliar a base de dados disponível. Esse processo consiste em a partir dos pontos de referência (pontos zeros), aplicar pequenas rotações e translações na peça digitalizada, de modo a reproduzir situações que podem ocorrer em função das variações naturais do processo de produção. Esse procedimento possibilita a geração de várias variações dimensionais possíveis de um mesmo item, aumentando significativamente o volume de dados disponíveis para o treinamento. A Figura 6 apresenta um exemplo desse processo, no qual o mesmo componente é mostrado com diferentes rotações e deslocamentos aplicados.
+
+Figura 6 – Exemplo de diferentes deslocamentos
+ 
+Fonte: Próprio Autor (2025).
+
+2.2.3 	Arquitetura da CNN
+
+Para um melhor compreendimento das CNNs utiliziadas neste projeto, nesta seção são descritos os principais componentes da CNN implementada. Inicialmente, detalha-se o processo de preparação e normalização dos dados de entrada, seguido pela definição da estrutura convolucional utilizada e dos parâmetros de otimização. Por fim, são apresentadas as métricas empregadas para quantificar o desempenho da rede na identificação de anomalias visuais.
+
+2.2.3.1 Pré-processamento
+
+As imagens foram obtidas a partir de duas classes previamente rotuladas, entre amostras boas e ruins, sendo carregadas a partir de diretórios distintos. Durante o carregamento, cada imagem foi redimensionada para 128 × 128 pixels e convertida para o formato RGB. Essa uniformização de dimensão e formato permite o processamento em lotes dentro da arquitetura convolucional, garantindo que cada amostra contribua de maneira homogênea para o aprendizado dos filtros espaciais. 
+Após o redimensionamento, cada imagem foi convertida para um arranjo numérico e submetida à normalização em escala de 0 a 1, por meio da divisão dos valores de pixel por 255. Essa etapa reduz a variância dos dados e acelera a convergência do otimizador durante o treinamento, evitando gradientes explosivos. Ao final desse processo, foi realizada a concatenação dos vetores de imagens e de seus respectivos rótulos, constituindo o conjunto total de amostras a serem utilizadas na modelagem. 
+Com o objetivo de avaliar a capacidade generalizadora do modelo, os dados foram divididos em três subconjuntos mutuamente exclusivos: treinamento, validação e teste. O conjunto de teste foi composto por 30% das amostras, reservado exclusivamente para a avaliação final de desempenho. O restante foi dividido entre treinamento e validação na proporção de aproximadamente 60% e 10%, respectivamente. O método de divisão utilizou amostragem estratificada, garantindo que a proporção entre as classes fosse preservada em todos os conjuntos. Foram ainda realizadas verificações automáticas para detectar eventuais interseções entre os diretórios, evitando vazamento e para confirmar a consistência da escala dos valores de pixel em cada subconjunto.
+Adicionalmente, técnicas de pré-processamento baseadas em data augmentation foram testadas com o objetivo de aumentar a diversidade amostral e investigar seu impacto sobre a robustez do modelo. Entre as transformações avaliadas, incluíram-se rotações leves, pequenos deslocamentos horizontais e verticais, cisalhamento, zoom e ajuste de brilho das imagens. No entanto, após análises comparativas de desempenho, verificou-se que tais modificações não resultaram em ganhos significativos de acurácia nem de estabilidade de validação, sendo portanto dispensadas nas configurações com melhores desempenho do modelo.
+
+2.2.3.2 Treinamento
+
+A arquitetura proposta segue um modelo convolucional sequencial, composta por três blocos convolucionais sucessivos, com quantidades crescentes de filtros (32, 64 e 128), todos com janelas de convolução de 3×3 e ativação ReLU[kRJ5.1]. Essa configuração possibilita a extração hierárquica de características, nas quais as primeiras camadas capturam bordas e texturas de baixo nível, enquanto as camadas mais profundas aprendem padrões morfológicos e estruturais complexos relacionados à qualidade superficial das amostras. Após cada camada convolucional, é aplicada uma operação de MaxPooling 2×2, que reduz a dimensionalidade espacial das representações internas, preservando as informações mais relevantes.
+Concluída a fase convolucional, os mapas de ativação resultantes são achatados por meio da camada Flatten[kRJ6.1], que os transforma em um vetor unidimensional. Esse vetor é então processado por uma camada totalmente conectada (Dense) com 256 neurônios e ativação ReLU[kRJ7.1], responsável por combinar as características extraídas e formar uma representação de alto nível do padrão de entrada. Para mitigar o risco de overfitting, foi empregada uma camada Dropout com taxa de 0,5, que desativa aleatoriamente metade das conexões durante o treinamento, forçando o modelo a aprender representações mais generalistas e menos dependentes de combinações específicas de neurônios. A camada final é composta por um único neurônio com ativação sigmoide[kRJ8.1], adequado à classificação binária, produzindo uma probabilidade contínua entre 0 e 1 que representa o grau de confiança do modelo em relação à classe “boa”.
+O modelo foi compilado com o otimizador Adam e função de perda adotada foi a binary cross-entropy, apropriada para problemas de duas classes mutuamente excludentes. Durante o treinamento, foram configurados 100 ciclos de época e batch size igual a 32, além de dois callbacks para controle dinâmico do aprendizado: o EarlyStopping, que interrompe o processo quando a perda de validação não apresenta melhora após dez épocas consecutivas, e o ReduceLROnPlateau, que reduz a taxa de aprendizado em 50% quando a métrica de validação estagna[kRJ9.1]. Esses mecanismos favorecem uma convergência suave e estável em direção a um ponto ótimo local.
+
+2.2.3.3 Avaliação de métricas de desempenho
+
+A avaliação do modelo foi conduzida utilizando o conjunto de teste independente, que apartir das predições do modelo, foi construída a matriz de confusão, permitindo quantificar o número de verdadeiros positivos, falsos positivos, verdadeiros negativos e falsos negativos. Essa análise possibilita compreender o comportamento do classificador em termos de seus erros e acertos, oferecendo uma visão mais detalhada do desempenho além da acurácia global. Com base na matriz de confusão, foram calculadas as principais métricas de desempenho: acurácia, precisão e sensibilidade.
+
+2.2.4 Arquitetura da YOLO
+
+Nesta etapa, são descritas a preparação do conjunto de dados, o processo de treinamento do modelo YOLOv8n[kRJ10.1] e as métricas utilizadas para avaliar seu desempenho na identificação e localização de falhas em peças industriais.
+
+2.2.4.1 Pré-processamento
+
+O processo de preparação das imagens para o treinamento da rede YOLO foi dividido em três etapas principais: anotação manual[kRJ11.1], geração das máscaras no formato YOLO e organização dos diretórios de treinamento, validação e teste.
+Inicialmente, todas as amostras foram separadas nas duas classes. Para cada amostra com defeito, o contorno da região de interesse foi anotado manualmente por um especialista através de um sistema interativo desenvolvido com a biblioteca OpenCV. O programa permitiu desenhar retângulos delimitadores diretamente sobre a imagem, gravando suas coordenadas em arquivos de texto associados. 
+Cada anotação foi salva no formato YOLO, que representa os objetos por meio das coordenadas (x, y, largura, altura) normalizadas em relação ao tamanho da imagem. Essa padronização permite que o modelo aprenda de forma independente da resolução absoluta dos arquivos. Paralelamente, para as amostras classificadas como “boas” foram gerados arquivos de anotação vazios, indicando ausência de regiões positivas. Essa abordagem assegurou a coerência estrutural do dataset, permitindo que a rede YOLO distinguísse corretamente entre imagens com e sem anomalias durante o treinamento supervisionado.
+Na etapa seguinte, as imagens e rótulos foram reorganizados no formato compatível com o framework Ultralytics[kRJ12.1], obedecendo à estrutura exigida pela YOLO.
+A divisão foi realizada de forma estratificada e balanceada, mantendo a proporção aproximada de 70% para treinamento, 20% para validação e 10% para teste[kRJ13.1], aplicadas separadamente às classes “boas” e “ruins”. Além disso, verificações automáticas foram implementadas para evitar duplicação ou interseção entre conjuntos[kRJ14.1], assegurando a independência estatística necessária para a avaliação final de desempenho.
+
+2.2.4.2 Treinamento
+
+O modelo de detecção empregado foi o YOLOv8n (nano), versão inicial e mais leve da família YOLOv8 desenvolvida pela Ultralytics. Essa arquitetura oferece um bom equilíbrio entre velocidade de inferência e capacidade de generalização, sendo composta por aproximadamente 11 milhões de parâmetros treináveis distribuídos em blocos convolucionais do tipo C2f, responsáveis por melhorar o fluxo de gradientes e a reutilização de características em diferentes escalas. 
+Este modelo foi inicializado com pesos pré-treinados no dataset COCO, que contém mais de 80 classes de objetos genéricos[kRJ15.1]. Essa técnica, conhecida como transfer learning, permite que o treinamento parta de representações já consolidadas de bordas, texturas e formas, acelerando a convergência e reduzindo a necessidade de grandes volumes de dados anotados. O treinamento foi conduzido com 150 épocas, batch size de 16 e tamanho de imagem fixado em 640×640 pixels, empregando a função de perda composta do YOLOv8, que considera simultaneamente os erros de localização, classificação e ajuste das caixas delimitadoras (bounding boxes). O otimizador AdamW foi utilizado com taxa de aprendizado inicial adaptativa, configurada automaticamente pelo framework.
+
+2.2.4.3 Avaliação de métricas de desempenho
+
+As métricas do modelo YOLO basearam-se nos padrões já implementado, incluindo precisão, sensibilidade e as medidas agregadas de mAP50 e mAP50–95[kRJ16.1], correspondentes à média da precisão em diferentes limiares de Intersection over Union (IoU). Essas métricas permitem quantificar a capacidade do modelo de identificar corretamente as falhas e também sua habilidade de evitar detecções incorretas.
+
+
+2.3 	RESULTADOS E DISCUSSÕES
+
+Nesta seção é apresentado a evolução do desempenho das CNNs em função do tamanho do banco de dados e do uso de técnicas de data augmentation. Foram conduzidos três experimentos principais, utilizando conjuntos com 46, 215 e 827 imagens, buscando observar o impacto progressivo do aumento de amostras sobre a acurácia, precisão e sensibilidade. Em cada cenário, também foram realizados testes comparativos com e sem data augmentation.
+
+Tabela 1 – Desempenho da CNN 
+Nº de imagens	Data Augmentation	Acurácia	Precisão	Sensibilidade
+46	Não	1	1	1
+46	Sim	1	1	1
+215	Não	0,89	0,96	0,82
+215	Sim	0,88	0,93	0,82
+827	Não	0,97	0,97	0,97
+827	Sim	0,96	0,98	0,95
+Fonte: Próprio Autor (2025).
+
+Na Tabela 1, observa-se a evolução do desempenho da rede convolucional em função do aumento progressivo do número de imagens utilizadas no treinamento. O primeiro conjunto, composto por 46 imagens, apresentou desempenho máximo, com acurácia de 1,00 em ambos os cenários, com e sem data augmentation. Esse resultado, entretanto, reflete um efeito de memorização decorrente do tamanho reduzido da base, que não oferece variabilidade suficiente para avaliar a capacidade de generalização do modelo. Assim, apesar da alta acurácia, esse teste inicial teve como principal função validar a estrutura da rede e o funcionamento do processo de aprendizado.
+Ao ampliar o conjunto para 215 imagens, houve uma redução perceptível na acurácia, que passou para 0,89, evidenciando um cenário mais realista e desafiador para o modelo. Esse comportamento é esperado, pois o aumento da diversidade das amostras exige uma maior capacidade de abstração da rede para identificar padrões relevantes e distinguir características das classes. Nesse estágio, o modelo ainda apresentava flutuações entre as épocas de treinamento e validação, indicando uma leve tendência ao sobreajuste.
+Por fim, no terceiro experimento, utilizando 827 imagens, observou-se uma melhora substancial e consistente no desempenho. A acurácia atingiu 0,97, representando um modelo mais equilibrado e capaz de generalizar adequadamente os padrões presentes nas amostras. O aumento expressivo da base de dados possibilitou à rede aprender representações mais robustas e estáveis, reduzindo significativamente os erros de classificação e garantindo convergência rápida das curvas de perda e acurácia.
+Figura 7 – Matriz de confusão e evolução da acurácia do modelo CNN
+  
+Fonte: Próprio Autor (2025).
+
+
+2.3.1 	Resultados com arquitetura YOLO
+
+A avaliação do modelo de detecção baseado na arquitetura YOLO permitiu uma análise detalhada sobre o desempenho da rede na tarefa de localizar regiões de falha nas peças. Os indicadores da Tabela 2, embora possam parecer modestos à primeira vista, exigem uma interpretação prática e contextualizada. O valor de precisão, representa a proporção de regiões que a rede indicou como falhas e que realmente correspondiam a uma falha real. Em outras palavras, quando o modelo aponta uma anomalia, em aproximadamente 70% dos casos ele está correto, o que demonstra um comportamento confiável e útil para aplicações industriais iniciais. Já a sensibilidade, expressa a capacidade da rede em encontrar todas as falhas existentes. No presente caso, o modelo conseguiu identificar cerca de 45% das falhas reais do conjunto de teste, o que indica que ainda existem falhas não detectadas, sendo algo esperado em um cenário com conjunto de dados reduzido e anotações complexas.
+
+Tabela 2 – Desempenho da YOLO
+Métrica	Valor
+Precisão	69,7%
+Sensibilidade	45,5%
+IoU	71,7%
+Acurácia (Classificação)	98%
+Fonte: Próprio Autor (2025).
+
+O valor do IoU foi utilizado como métrica adicional para avaliar o nível de sobreposição entre as caixas preditas e as caixas reais. Esse índice mede o quanto as regiões detectadas coincidem espacialmente com as anotações de referência. Na prática, um IoU superior a 0,3 já representa uma detecção coerente com a posição real da falha[kRJ17.1], considerando as pequenas variações possíveis durante o processo de rotulagem manual. Com 71,7% de detecções superando esse limiar, pode-se afirmar que a rede apresenta um desempenho interessante na localização espacial das anomalias, mesmo em um contexto de incertezas de anotação e limites pouco definidos entre regiões de interesse.
+Vale destacar que a construção do conjunto de labels foi realizada com um número limitado de avaliadores, o que introduz uma variabilidade natural nas delimitações das regiões de falha. Pequenas diferenças na marcação das bordas podem impactar significativamente os valores de IoU e sensibilidade, sem necessariamente comprometer a utilidade prática do sistema. Ainda assim, o modelo alcançou uma acurácia global de 98% na classificação das imagens, o que evidencia sua competência em distinguir imagens contendo falhas daquelas totalmente saudáveis.
+O resultado alcançado é expressivo dentro da realidade atual de um processo de metrologia nas industrias. Em que com a falta de uma forma automatizada de identificação dos locais de falha, o modelo YOLO consegue entregar cerca de 45% delas com precisão próxima de 70%, acertando uma quantidade relevante de sobreposições espaciais. Com isso, o sistema é capaz de mapear regiões críticas, oferecendo uma ferramenta promissora para suporte à inspeção visual e análise metrológica, especialmente quando se considera a natureza complexa e subjetiva da anotação manual em superfícies industriais.[kRJ18.1]
+
+ 
+
+ 
+3 CONSIDERAÇÕES FINAIS
+
+Parte final do artigo, na qual se apresentam as conclusões correspondentes aos objetivos e hipóteses
+ 
+REFERÊNCIAS 
+
+BARBOSA, V. B.; SOUSA, S. D. S.; ALMEIDA, J. R.; CALILI, R. F. Smart Manufacturing and Digitalization of Metrology: A Systematic Literature Review and a Research Agenda. Sensors, v. 22, n. 16, p. 1-25, 2022. 
+Disponível em: https://doi.org/10.3390/s22166114.
+
+FERGUSON, M. K. et al. Automatic defect detection in X-ray images using deep learning. Journal of Manufacturing Systems, v. 48, p. 98-108, 2018. 
+Disponível em: https://doi.org/10.1016/j.jmsy.2018.03.003.
+
+MASTER GAGE & TOOL CO. How Metrology and Quality Control Help Ensure Product Accuracy and Consistency. 2023. 
+Disponível em: https://www.mastergt.com/how-metrology-and-quality-control-help-ensure-product-accuracy-and-consistency/. Acesso em: 9 jun. 2025.
+
+ZEISS. Digital Transformation for Digital Engineering in Manufacturing. 2023. Disponível em: https://www.zeiss.com/metrology/us/explore/topics/digital-transformation-for-digital-engineering-in-manufacturing.html. Acesso em: 9 jun. 2025.
+
+CREAFORM. Optical 3D scanner MetraSCAN. 
+Disponível em: https://www.creaform3d.com/en/products/portable-3d-scanners/optical-3d-scanner-metrascan. Acesso em: 08 set. 2025.
+
+BAKER, João. Dica de GD&T 60 - Precisa estar explícito no desenho qual a norma para tolerância geométrica. YouTube, 15 mar. 2021. 
+Disponível em: https://www.youtube.com/watch?v=_oIkWWva8uI. Acesso em: 08 set. 2025.
+
+HAVEN METROLOGY. Understanding GD&T Flatness in PolyWorks 2020. Haven Metrology, 2020. 
+Disponível em: https://www.havenmetrology.com/understanding-gdt-flatness-in-polyworks-2020/. Acesso em: 10 set. 2025. 
+
+INTERNATIONAL ORGANIZATION FOR STANDARDIZATION (ISO). Castings System of dimensional tolerances and machining allowances. ISO 8062:1994. Genebra: ISO, 1994.
+
+Oliveira, B. D., Souza, G., Brasil, N. N., Coch, V., Pinto, M. B., Lourenço, R., Lopes, L., Martins, A. A., Duarte Filho, N. L., Oliveira, V. M., Malheiros, M. G., Pias, M. R., Borges, E. N., & Gonçalves, E. M. N. (2024). Digital Twin Across Industry 5.0: Integrating Dimensional Analysis to a Rotor Inspection Module. 2024 IEEE 22nd International Conference on Industrial Informatics (INDIN).
+ 
+SAQLAIN, Muhammad; ABBAS, Qasim; LEE, Jong Yun. A deep convolutional neural network for wafer defect identification on an imbalanced dataset in semiconductor manufacturing processes. IEEE Transactions on Semiconductor Manufacturing, v. 33, n. 3, p. 436-444, 2020. 
+Disponível em: https://doi.org/10.1109/TSM.2020.2994357.
+ 
+TUR, Erkan. Applying deep learning for automated quality control and defect detection in multi-stage plastic extrusion process. In: INTERNATIONAL CONGRESS ON HUMAN-COMPUTER INTERACTION, OPTIMIZATION AND ROBOTIC APPLICATIONS (HORA), 5., 2023. Anais [...]. Ankara: IEEE, 2023. p. 1-6. 
+Disponível em: https://doi.org/10.1109/HORA58378.2023.10156750.
+
+REAL, Carlos; TORRES, Yaniel. Effect of changes in the sequence of assembly operations on error rates: a case study from the car manufacturing industry. IEEE Access, v. 12, p. 34644-34656, 2024. 
+Disponível em: https://doi.org/10.1109/ACCESS.2024.3371980.
+
+YU, Zhiqiang; WANG, Taiyong; WANG, Peng; TIAN, Ying; LI, Hongbin. Rapid and precise reverse engineering of complex geometry through multi-sensor data fusion. IEEE Access, v. 7, p. 165792-165805, 2019. 
+Disponível em: https://doi.org/10.1109/ACCESS.2019.2949261.
+
+VON FREYBERG, Axel; FISCHER, Andreas. Geometric partitioning of complex surface measurements. IEEE Transactions on Instrumentation and Measurement, v. 69, n. 7, p. 4836-4846, July 2020. 
+Disponível em: https://doi.org/10.1109/TIM.2019.2954008.
+
+ISO. ISO 8015:2011 Geometrical product specifications (GPS), Fundamentals, Concepts, principles and rules. Geneva: International Organization for Standardization, 2011.
+
+ISO. ISO 8062-3:2007 Geometrical product specifications (GPS), Dimensional and geometrical tolerances for castings, Part 3: General dimensional and geometrical tolerances and machining allowances for castings. Geneva: International Organization for Standardization, 2007.
+
+ZHAO, Xia; WANG, Limin; ZHANG, Yufei; HAN, Xuming; DEVECI, Muhammet; PARMAR, Milan. A review of convolutional neural networks in computer vision. Artificial Intelligence Review, v. 57, p. 99, 2024. DOI: https://doi.org/10.1007/s10462-024-10721-6.
+
+ALZUBAIDI, Laith; ZHANG, Jinglan; HUMAIDI, Amjad J.; AL-DUJAILI, Ayad; DUAN, Ye; AL-SHAMMA, Omran; SANTAMARÍA, José; FADHEL, Mohammed A.; AL-AMIDIE, Muthana; FARHAN, Laith. Review of deep learning: concepts, CNN architectures, challenges, applications, future directions. Journal of Big Data, v. 8, n. 53, 2021. DOI: https://doi.org/10.1186/s40537-021-00444-8.
+
+
+YAMASHITA, Rikiya; NISHIO, Mizuho; DO, Richard Kinh Gian; TOGASHI, Kaori. Convolutional neural networks: an overview and application in radiology. Insights into Imaging, v. 9, p. 611-629, 2018. DOI: https://doi.org/10.1007/s13244-018-0639-9.
+
+REDMON, Joseph; DIVVALA, Santosh; GIRSHICK, Ross; FARHADI, Ali. You Only Look Once: Unified, Real-Time Object Detection. In: Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR), Las Vegas, 2016. p. 779–788. DOI: https://doi.org/10.1109/CVPR.2016.91.
+
+KANG, Seunghwan; LEE, Juhyung; KIM, Hyung-Jun; LEE, Sanghoon. Object Detection YOLO Algorithms and Their Industrial Applications. Electronics (MDPI), v. 14, n. 6, p. 1104, 2024. DOI: https://doi.org/10.3390/electronics14061104.
+
+ZENDEHDEL, Niloofar; CHEN, Haodong; LEU, Ming C. Real-time tool detection in smart manufacturing using You-Only-Look-Once (YOLO)v5. Manufacturing Letters, v. 35, supl., p. 1052–1059, ago. 2023. DOI: https://doi.org/10.1016/j.mfglet.2023.08.062.
+
