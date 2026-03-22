@@ -1,0 +1,13 @@
+# TensorFlow CNN Requirements
+# Minimal dependency tree for binary classification on custom dataset
+
+tensorflow>=2.15.0
+numpy>=1.24.3
+pandas>=2.0.0
+scikit-learn>=1.3.0
+matplotlib>=3.7.0
+Pillow>=10.0.0
+
+# Optional: Jupyter ecosystem for running the notebook
+jupyter
+ipykernel

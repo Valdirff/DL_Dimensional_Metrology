@@ -1,0 +1,14 @@
+# YOLOv8 Spatial Localization Requirements
+# Core dependencies for Ultralytics framework and OpenCV annotation tools
+
+ultralytics>=8.1.0
+torch>=2.2.0
+torchvision>=0.17.0
+opencv-python>=4.8.0
+tqdm>=4.66.0
+numpy>=1.24.3
+scikit-learn>=1.3.0
+
+# Optional: Jupyter ecosystem for running the notebook
+jupyter
+ipykernel
