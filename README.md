@@ -140,6 +140,10 @@ data/good/  +  data/bad/
 
 ![Exemplo de Mapa de Desvio Térmico com Deteccão YOLO](docs/yolo_defect_example.png)
 
+<p align="center">
+  <em><b>Nota sobre Confidencialidade / Confidentiality Notice:</b> The image above is an AI-generated synthetic representation designed to illustrate the YOLO detection output on a color deviation map. The original industrial point-cloud datasets and precise defect boundaries are governed by strict Non-Disclosure Agreements, and have thus been replaced for portfolio demonstration purposes.</em>
+</p>
+
 ### CNN Binary Classifier
 
 Trained on 827 color deviation map images across two classes (conforming / non-conforming):
