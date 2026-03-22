@@ -4,24 +4,24 @@ import shutil
 from pathlib import Path
 
 # ====== CONFIG ======
-BASE = Path("dados")
-DIR_ORG   = BASE / "organizar"
-DIR_BOAS  = BASE / "boas"
-DIR_RUINS = BASE / "ruins"
+BASE = Path("data")
+DIR_ORG   = BASE / "raw"
+DIR_GOOD  = BASE / "good"
+DIR_BAD = BASE / "bad"
 
 EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".tiff", ".tif", ".webp"}
 MAX_SIDE = 1300
 
-# Aparência do overlay (deixe menor aqui)
-FONT_SCALE = 0.5       # antes 0.7
-THICKNESS  = 1         # antes 2
-BOX_ALPHA  = 0.35      # transparência da caixa
-BOX_PAD    = 6         # padding interno da caixa
-SHOW_INSTRUCTIONS = False   # começa minimalista; tecle [i] para mostrar
+# Overlay appearance
+FONT_SCALE = 0.5       
+THICKNESS  = 1         
+BOX_ALPHA  = 0.35      
+BOX_PAD    = 6         
+SHOW_INSTRUCTIONS = False   
 # =====================
 
 def ensure_dirs():
-    for d in [DIR_ORG, DIR_BOAS, DIR_RUINS]:
+    for d in [DIR_ORG, DIR_GOOD, DIR_BAD]:
         d.mkdir(parents=True, exist_ok=True)
 
 def list_images():
@@ -44,15 +44,15 @@ def move_file(src: Path, dst_dir: Path) -> Path:
 
 def undo_last_action(history):
     if not history:
-        print("⚠️ Nada para desfazer.")
+        print("⚠️ Nothing to undo.")
         return False
     last = history.pop()
     if last["dst"].exists():
         back = unique_dest_path(last["src"].parent, last["src"].name)
         shutil.move(str(last["dst"]), str(back))
-        print(f"↩️ Desfeito: {last['dst'].name} voltou para {back}")
+        print(f"↩️ Undone: {last['dst'].name} moved back to {back}")
         return True
-    print("⚠️ Não foi possível desfazer (arquivo não encontrado).")
+    print("⚠️ Could not undo (file not found).")
     return False
 
 def resize_to_fit(img):
@@ -64,18 +64,16 @@ def resize_to_fit(img):
     return cv2.resize(img, (int(w*scale), int(h*scale)), interpolation=cv2.INTER_AREA)
 
 def draw_overlay(img, lines, tl=(10, 10)):
-    """Desenha uma caixinha compacta com as linhas desejadas."""
+    """Draws a compact box with instructions."""
     overlay = img.copy()
-    # mede
     sizes = [cv2.getTextSize(t, cv2.FONT_HERSHEY_SIMPLEX, FONT_SCALE, THICKNESS)[0] for t in lines]
     w = max(s[0] for s in sizes) + 2*BOX_PAD
     h = sum(s[1] for s in sizes) + (len(lines)-1)*4 + 2*BOX_PAD
     x1, y1 = tl
     x2, y2 = x1 + w, y1 + h
-    # caixa
     cv2.rectangle(overlay, (x1, y1), (x2, y2), (0,0,0), -1)
     img[:] = cv2.addWeighted(overlay, BOX_ALPHA, img, 1-BOX_ALPHA, 0)
-    # textos
+    
     y = y1 + BOX_PAD + sizes[0][1]
     for t, s in zip(lines, sizes):
         cv2.putText(img, t, (x1 + BOX_PAD, y), cv2.FONT_HERSHEY_SIMPLEX, FONT_SCALE, (255,255,255), THICKNESS, cv2.LINE_AA)
@@ -84,36 +82,34 @@ def draw_overlay(img, lines, tl=(10, 10)):
 def show_image_with_overlay(img_path: Path, index: int, total: int, show_instr: bool):
     img = cv2.imread(str(img_path))
     if img is None:
-        print(f"⚠️ Não consegui abrir: {img_path}")
+        print(f"⚠️ Could not open: {img_path}")
         return False
     img = resize_to_fit(img)
 
     line1 = f"{index+1}/{total} | {img_path.name}"
     if show_instr:
-        line2 = "[b]=boas  [r]=ruins  [ESPAÇO]=desfazer  [i]=ocultar ajuda  [q/ESC]=sair"
+        line2 = "[g]=good  [b]=bad  [SPACE]=undo  [i]=hide help  [q/ESC]=exit"
         draw_overlay(img, [line1, line2])
     else:
-        # só a linha de progresso, bem discreta
         draw_overlay(img, [line1])
 
-    cv2.imshow("Classificar", img)
+    cv2.imshow("Classifier", img)
     return True
 
 def main():
     ensure_dirs()
     files = list_images()
     if not files:
-        print("Nenhuma imagem em 'dados/organizar'.")
+        print("No images found in 'data/raw'.")
         return
 
-    print("Controles: [b]=boas, [r/R]=ruins, [ESPACO]=desfazer, [i]=mostrar/ocultar ajuda, [q/ESC]=sair")
-    print(f"Total encontrado em organizar/: {len(files)}")
+    print("Controls: [g]=good, [b/B]=bad, [SPACE]=undo, [i]=toggle help, [q/ESC]=exit")
+    print(f"Total found in raw/: {len(files)}")
 
     history = []
     i = 0
-    window = "Classificar"
+    window = "Classifier"
     cv2.namedWindow(window, cv2.WINDOW_AUTOSIZE)
-
     show_instr = SHOW_INSTRUCTIONS
 
     while i < len(files):
@@ -130,39 +126,34 @@ def main():
 
         key = cv2.waitKey(0) & 0xFF
 
-        if key in (ord('q'), 27):  # q ou ESC
-            print("Encerrando...")
+        if key in (ord('q'), 27):
+            print("Exiting...")
             break
-
-        elif key == ord('i'):      # alterna ajuda
+        elif key == ord('i'):      
             show_instr = not show_instr
             cv2.destroyWindow(window)
-
-        elif key == ord('b'):
-            dst = move_file(path, DIR_BOAS)
+        elif key == ord('g'):
+            dst = move_file(path, DIR_GOOD)
             history.append({"src": DIR_ORG / name, "dst": dst})
-            print(f"✅ {name} → boas/")
+            print(f"✅ {name} → good/")
             i += 1
             cv2.destroyWindow(window)
-
-        elif key in (ord('r'), ord('R')):
-            dst = move_file(path, DIR_RUINS)
+        elif key in (ord('b'), ord('B')):
+            dst = move_file(path, DIR_BAD)
             history.append({"src": DIR_ORG / name, "dst": dst})
-            print(f"❌ {name} → ruins/")
+            print(f"❌ {name} → bad/")
             i += 1
             cv2.destroyWindow(window)
-
-        elif key == 32:  # espaço = desfazer
+        elif key == 32:  
             undone = undo_last_action(history)
             if undone:
                 i = max(0, i - 1)
             cv2.destroyWindow(window)
-
         else:
-            print("Tecla não reconhecida. Use: b / r(R) / espaco / i / q(ESC).")
+            print("Unrecognized key. Use: g / b(B) / space / i / q(ESC).")
 
     cv2.destroyAllWindows()
-    print("Pronto!")
+    print("Done!")
 
 if __name__ == "__main__":
     main()

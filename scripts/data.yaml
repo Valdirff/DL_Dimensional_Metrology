@@ -1,6 +1,6 @@
-train: C:/Users/Valdir/OneDrive/Mestrado/Kevin/Codigo_CCN_TCC_FINAL/dataset_yolo/images/train
-val: C:/Users/Valdir/OneDrive/Mestrado/Kevin/Codigo_CCN_TCC_FINAL/dataset_yolo/images/val
-test: C:/Users/Valdir/OneDrive/Mestrado/Kevin/Codigo_CCN_TCC_FINAL/dataset_yolo/images/test
+train: ../data/dataset_yolo/images/train
+val: ../data/dataset_yolo/images/val
+test: ../data/dataset_yolo/images/test
 
 nc: 1
-names: ['falha']
+names: ['defect']
