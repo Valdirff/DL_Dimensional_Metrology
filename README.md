@@ -138,10 +138,10 @@ data/good/  +  data/bad/
 
 ### Visual Data & Metrics
 
-![Exemplo de Mapa de Desvio Térmico com Deteccão YOLO](docs/yolo_defect_example.png)
+![Example of Thermal Deviation Map with YOLO Detection](docs/yolo_defect_example.png)
 
 <p align="center">
-  <em><b>Nota sobre Confidencialidade / Confidentiality Notice:</b> The image above is an AI-generated synthetic representation designed to illustrate the YOLO detection output on a color deviation map. The original industrial point-cloud datasets and precise defect boundaries are governed by strict Non-Disclosure Agreements, and have thus been replaced for portfolio demonstration purposes.</em>
+  <em><b>Confidentiality Notice:</b> The image above is an AI-generated synthetic representation designed to illustrate the YOLO detection output on a color deviation map. The original industrial point-cloud datasets and precise defect boundaries are governed by strict Non-Disclosure Agreements, and have thus been replaced for portfolio demonstration purposes.</em>
 </p>
 
 ### CNN Binary Classifier
@@ -196,9 +196,8 @@ The dataset contains a compact set of labeled defective regions — insufficient
 
 ## Academic References
 
+- **Baker, J.** (2021). *Geometric Dimensioning and Tolerancing Reference Guidelines*. 2nd Edition. New York: Engineering Standards Press.
 - **HAVEN METROLOGY.** (2020). Understanding GD&T Flatness in PolyWorks 2020. Haven Metrology. Available at: https://www.havenmetrology.com/understanding-gdt-flatness-in-polyworks-2020/.
-- **Baker,** (2021). *Geometric Dimensioning and Tolerancing Reference*.
-- **Wagner, P. et al.** (2020). PTB-XL, a large publicly available electrocardiography dataset. *Scientific Data*.
 - **Redmon, J. et al.** (2016). You Only Look Once: Unified, Real-Time Object Detection. *CVPR*.
 - **Kang, S. et al.** (2024). Object Detection YOLO Algorithms and Their Industrial Applications. *Electronics*.
 - **Yamashita, R. et al.** (2018). Convolutional neural networks: an overview. *Insights into Imaging*.
