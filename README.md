@@ -85,7 +85,9 @@ DL_Dimensional_Metrology/
 │   └── data.yaml               # YOLO class paths and attributes
 │
 └── docs/
-    └── TCC_Manuscript.txt      # Academic manuscript detailing methodology
+    ├── yolo_defect_example.png # Example of semantic deviation map
+    ├── confusion_matrix.png    # Classification evaluation matrix
+    └── training_history.png    # Training vs Validation curves
 ```
 
 ---
@@ -119,6 +121,17 @@ data/good/  +  data/bad/
 ---
 
 ## Results Summary
+
+### Visual Data & Metrics
+
+*(**Nota:** Salve a imagem exemplo gerada pelo GPT na pasta `docs/` com o nome `yolo_defect_example.png`. Se quiser adicionar suas matrizes ou gráficos, salve como `confusion_matrix.png` e `training_history.png`)*
+
+![Exemplo de Mapa de Desvio Térmico com Deteccão YOLO](docs/yolo_defect_example.png)
+
+<p align="center">
+  <img src="docs/confusion_matrix.png" width="45%" alt="Matriz de Confusão" />
+  <img src="docs/training_history.png" width="45%" alt="Histórico de Treinamento" />
+</p>
 
 ### CNN Binary Classifier
 
