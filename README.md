@@ -93,8 +93,9 @@ DL_Dimensional_Metrology/
 │   └── data.yaml               # YOLO class paths and attributes
 │
 └── docs/
-    ├── polyworks_example.png   # PolyWorks color map comparison example
-    └── yolo_defect_example.png # Example of semantic deviation map
+    ├── polyworks_example.png       # PolyWorks color map comparison example
+    ├── yolo_nodefect_example.png   # Example of conforming (nominal) part
+    └── yolo_defect_example.png     # Example of defective part with YOLO detection
 ```
 
 ---
@@ -131,10 +132,13 @@ data/good/  +  data/bad/
 
 ### Visual Data & Metrics
 
-![Example of Thermal Deviation Map with YOLO Detection](docs/yolo_defect_example.png)
+<p align="center">
+  <img src="docs/yolo_nodefect_example.png" width="46%" alt="Nominal Part (No Defects)" />
+  <img src="docs/yolo_defect_example.png" width="46%" alt="Defective Part (YOLO Detection)" />
+</p>
 
 <p align="center">
-  <em><b>Confidentiality Notice:</b> The image above is an AI-generated synthetic representation designed to illustrate the YOLO detection output on a color deviation map. The original industrial point-cloud datasets and precise defect boundaries are governed by strict Non-Disclosure Agreements, and have thus been replaced for portfolio demonstration purposes.</em>
+  <em><b>Confidentiality Notice:</b> The images above are AI-generated synthetic representations designed to illustrate conforming parts and YOLO detection outputs on color deviation maps. The original industrial point-cloud datasets and precise defect boundaries are governed by strict Non-Disclosure Agreements, and have thus been replaced for portfolio demonstration purposes.</em>
 </p>
 
 ### CNN Binary Classifier

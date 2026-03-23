@@ -2,10 +2,11 @@ import cv2
 import os
 
 # Directories
-defect_images_folder = "../data/bad/"
-good_images_folder = "../data/good/"
-defect_labels_folder = "../data/labels_bad/"
-good_labels_folder = "../data/labels_good/"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+defect_images_folder = os.path.join(SCRIPT_DIR, "../data/bad/")
+good_images_folder = os.path.join(SCRIPT_DIR, "../data/good/")
+defect_labels_folder = os.path.join(SCRIPT_DIR, "../data/labels_bad/")
+good_labels_folder = os.path.join(SCRIPT_DIR, "../data/labels_good/")
 os.makedirs(defect_labels_folder, exist_ok=True)
 os.makedirs(good_labels_folder, exist_ok=True)
 

@@ -1,59 +1,51 @@
-import cv2
-import numpy as np
 import os
-
-def create_synthetic_deviation_map(filename, defect=False):
-    # Base "nominal" surface map (cool colors: cyan/blue)
-    img = np.ones((400, 600, 3), dtype=np.uint8) * 200
-    img[:, :, 0] = 255  # Blue channel maxed
-    img[:, :, 1] = 250  # Green channel high
-    
-    # Add fake CAD grid/mesh lines
-    for i in range(0, 600, 50):
-        cv2.line(img, (i, 0), (i, 400), (180, 200, 255), 1)
-    for j in range(0, 400, 50):
-        cv2.line(img, (0, j), (600, j), (180, 200, 255), 1)
-        
-    if defect:
-        # Simulate material excess/anomaly (warm colors: red/yellow gradient blob)
-        center = (np.random.randint(200, 400), np.random.randint(100, 300))
-        radius = np.random.randint(30, 80)
-        cv2.circle(img, center, radius, (0, 0, 255), -1)  # Solid red core (OpenCV uses BGR)
-        cv2.circle(img, center, radius + 20, (0, 100, 255), 15) # Orange halo
-        cv2.circle(img, center, radius + 40, (0, 200, 255), 10) # Yellow halo
-        
-        # Add some random black specks mimicking scan noise on the defect
-        for _ in range(50):
-            pt = (center[0] + np.random.randint(-radius, radius), center[1] + np.random.randint(-radius, radius))
-            cv2.circle(img, pt, 2, (0, 0, 0), -1)
-            
-    cv2.putText(img, "SYNTHETIC DEVIATION MAP", (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,0), 2)
-    cv2.putText(img, "(FOR DEMO PURPOSES ONLY)", (20, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (50,50,50), 1)
-    
-    return img
+import shutil
 
 def main():
-    out_dir = "../data/raw"
+    # Define absolute paths dynamically based on script location
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    docs_dir = os.path.join(script_dir, "..", "docs")
+    out_dir = os.path.join(script_dir, "..", "data", "raw")
+    
+    # Create the target directory if it doesn't exist
     os.makedirs(out_dir, exist_ok=True)
     
-    print("Generating synthetic dummy dataset for demonstration...")
+    print("Preparing synthetic demonstration dataset from reference images...")
     
-    # 5 Conforming images
-    for i in range(1, 6):
-        img_name = f"nominal_part_{i}.png"
-        img = create_synthetic_deviation_map(img_name, defect=False)
-        cv2.imwrite(os.path.join(out_dir, img_name), img)
-        print(f"Generated {img_name} (Conforming)")
+    # 1. Replicate the single `nominal` (non-defective) image 30 times
+    nominal_ref = os.path.join(docs_dir, "yolo_nodefect_example.png")
+    if not os.path.exists(nominal_ref):
+        print(f"Error: Could not find reference file {nominal_ref}")
+    else:
+        for i in range(1, 31):
+            dest_name = f"nominal_part_{i}.png"
+            shutil.copy2(nominal_ref, os.path.join(out_dir, dest_name))
+        print("Deployed 30 Conforming replicas.")
         
-    # 5 Defective images
-    for i in range(1, 6):
-        img_name = f"defective_part_{i}.png"
-        img = create_synthetic_deviation_map(img_name, defect=True)
-        cv2.imwrite(os.path.join(out_dir, img_name), img)
-        print(f"Generated {img_name} (Defective)")
-        
-    print("\n✅ Done! Synthetic maps saved to 'data/raw/'.")
-    print("You can now safely run 'python scripts/classify_images.py' to test the interactive sorter.")
+    # 2. Replicate the 5 specific defective images 6 times each (30 total)
+    defect_sources = [
+        "yolo_defect_example.png",
+        "yolo_defect_example2.png",
+        "yolo_defect_example3.png",
+        "yolo_defect_example4.png",
+        "yolo_defect_example5.png"
+    ]
+    
+    count = 1
+    # Loop over the sources 6 times
+    for _ in range(6):
+        for defect_file in defect_sources:
+            defect_ref = os.path.join(docs_dir, defect_file)
+            if os.path.exists(defect_ref):
+                dest_name = f"defective_part_{count}.png"
+                shutil.copy2(defect_ref, os.path.join(out_dir, dest_name))
+                count += 1
+            else:
+                print(f"Warning: {defect_file} not found in docs/")
+                
+    print("Deployed 30 Defective samples.")
+    print(f"\n✅ Dataset successfully populated with {count - 1 + 30} images in 'data/raw/'.")
+    print("The pipeline has enough volume to satisfy split constraints strictly.")
 
 if __name__ == "__main__":
     main()

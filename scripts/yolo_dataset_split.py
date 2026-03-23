@@ -1,14 +1,16 @@
 import os, shutil
 from sklearn.model_selection import train_test_split
 
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Current folders
-dir_good = "../data/good"
-dir_defect = "../data/bad"
-labels_good = "../data/labels_good"
-labels_defect = "../data/labels_bad"
+dir_good = os.path.join(SCRIPT_DIR, "../data/good")
+dir_defect = os.path.join(SCRIPT_DIR, "../data/bad")
+labels_good = os.path.join(SCRIPT_DIR, "../data/labels_good")
+labels_defect = os.path.join(SCRIPT_DIR, "../data/labels_bad")
 
 # Target folders mapped for YOLO architectures
-base_out = "../data/dataset_yolo/"
+base_out = os.path.join(SCRIPT_DIR, "../data/dataset_yolo/")
 splits = ["train", "val", "test"]
 
 for split in splits:
