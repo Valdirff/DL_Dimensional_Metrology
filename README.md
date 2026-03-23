@@ -94,6 +94,8 @@ DL_Dimensional_Metrology/
 │
 └── docs/
     ├── polyworks_example.png       # PolyWorks color map comparison example
+    ├── accuracy_evolution.png      # CNN training vs. validation accuracy curves
+    ├── confusion_matrix.png        # CNN confusion matrix on held-out test set
     ├── yolo_nodefect_example.png   # Example of conforming (nominal) part
     └── yolo_defect_example.png     # Example of defective part with YOLO detection
 ```
@@ -149,6 +151,16 @@ Trained on 827 color deviation map images across two classes (conforming / non-c
 - **Recall**: 97%
 
 The model was evaluated on an independent held-out test set (30% of the dataset). The strong performance confirms that convolutional filters successfully capture the visual signature of dimensional non-conformance. Data augmentation (rotations, zoom, shear) produced no measurable accuracy improvement — likely because the color gradient patterns encoding conformance are hyper-sensitive to geometric physical distortion.
+
+<p align="center">
+  <img src="docs/accuracy_evolution.png" height="300" alt="CNN Accuracy Evolution" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="docs/confusion_matrix.png" height="300" alt="CNN Confusion Matrix" />
+</p>
+<p align="center">
+  <em><b>Left:</b> Training and validation accuracy over 100 epochs — both curves converge above 97%, confirming stable generalization without significant overfitting.<br>
+  <b>Right:</b> Confusion matrix on the held-out test set — 125 defective and 116 conforming samples correctly classified, with only 8 total misclassifications (97% overall accuracy).</em>
+</p>
 
 ### YOLOv8 Spatial Locator
 
